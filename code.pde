@@ -7,10 +7,7 @@ String[] metal = {"Zinc", "Aluminium", "Iron(II)", "Iron(III)", "Copper", "Chrom
 String[] preci = {"No Precipitates", "Has Precipitates"};
 String[] solub = {"Dissolves", "Does not Dissolve"};
 String[] pncolr = {"Dirty Green", "Brown", "Blue", "Grey Green", "White", "None"};
-color[] pcolr = {color(59,70,45), color(64,29,6), color(123,209,221), color(87,100,87), color(255), color(255,0)};
-
-float decox = 0;
-float decoy = 0;
+color[] pcolr = {color(59,70,45), color(64,29,6), color(123,209,221), color(87,100,87), color(255), color(255,100)};
 
 // Metal, Precipitate in NaOH, Dissolve in excess NaOH, Colour of Precipitate in NaOH, Precipitate in (NH3)/(NH4)OH, Dissolve in excess (NH3)/(NH4)OH, Colour of Precipitate in (NH3)/(NH4)OH.
 
@@ -30,6 +27,8 @@ int[] c_calc = {6, 1, 1, 4, 0, 0, 5};
 
 int[] c_ammo = {7, 0, 0, 5, 0, 0, 5};
 
+int fails = 0;
+
 void setup() {
     width = window.innerWidth;
     height = window.innerHeight;
@@ -38,6 +37,7 @@ void setup() {
     pheight = height;
     bots = new ArrayList();
     //textFont(myfont);
+    bots.add(new Bot());
     bots.add(new Bot());
 }
 
@@ -55,33 +55,63 @@ void draw() {
     height = window.innerHeight;
     size(width, height);
     background(225);
-    translate(decox,decoy);
     fill(225);
     stroke(0);
-    rect(-width,-height,width*3,height*3);
     for (int i=bots.size()-1; i>=0; i--) {
         Particle b = (Bot) bots.get(i);
-        b.update(i);
+        b.draw(i);
+        if (b.pass && b.x > width + 300) {
+          bots.remove(i);
+        }
+        if (b.reverse && b.x < -300) {
+          bots.remove(i);
+        }
     }
+    fill(150);
+    rect(0,height*3/4,width,height/4);
+    fill(0,255,0);
+    ellipse(width/8,height*3/4 + height/8,width/9,width/9);
+    fill(255,0,0);
+    ellipse(width*7/8,height*3/4 + height/8,width/9,width/9);
     pwidth = width;
     pheight = height;
-    translate(-decox,-decoy);
+    
+    Particle b = (Bot) bots.get(0);
+    b.viewInfo();
+    
+    textAlign(CENTER,TOP);
+    textSize(15);
+    fill(0);
+    text("lol you noob you failed " + fails + " times yolo",width/2,0);
 }
 
 void mousePressed() {
-    bots.add(new Bot());
+    if (dist(mouseX,mouseY,width/8,height*3/4 + height/8) <= width/9) {
+      Particle b = (Bot) bots.get(0);
+      b.pass = true;
+      if (b.fake || b.notcert) {fails += 1;}
+      bots.add(new Bot());
+    }
+    if (dist(mouseX,mouseY,width*7/8,height*3/4 + height/8) <= width/9) {
+      Particle b = (Bot) bots.get(0);
+      b.reverse = true;
+      if (b.fake == false && b.notcert == false) {fails += 1;}
+      bots.add(new Bot());
+    }
 }
 
 void mouseDragged() {
-    decox += mouseX - pmouseX;
-    decoy += mouseY - pmouseY;
+    Particle b = (Bot) bots.get(0);
+    if (mouseX.between(b.px - 190, b.px + 190) && mouseY.between(b.py - 150, b.py + 150)) {
+      b.px += mouseX - pmouseX;
+      b.py += mouseY - pmouseY;
+    }
 }
 
 class Bot {
     float x;
-    float y;
-    int id;
-    int fid;
+    float px = width/2;
+    float py = -150;
     int which;
     boolean notcert;
     boolean ammon;
@@ -89,11 +119,21 @@ class Bot {
     int[] corval;
     int[] wdisp;
     boolean fake;
+    boolean shake;
+    float[] rot = new float[3];
+    float[] box = new float[3];
+    boolean pass = false;
+    boolean reverse = false;
 
     Bot() {
-      x = random(-width,width*2);
-      y = random(-height,height*2);
+      x = -300;
       choiceval = chance.pick([c_zinc, c_alum, c_iron_a, c_iron_b, c_copp, c_chro, c_calc, c_ammo]);
+      rot[0] = 0;
+      rot[1] = 0;
+      rot[2] = 0;
+      box[0] = random(20);
+      box[1] = random(20);
+      box[2] = random(20);
       notcert = false;
       which = chance.pick([0,3,5]);
       if ((choiceval == c_calc && which == 3) || (choiceval == c_zinc && which == 0) || (choiceval == c_alum && which == 0)) {notcert = true;}
@@ -142,58 +182,106 @@ class Bot {
       }
     };
 
-    void update(cid) {
-        id = cid;
-        
-        if (wdisp[3] == corval[3]) {stroke(0);} else {stroke(255,0,0);}
-        fill(pcolr[wdisp[3]]);
-        rect(x-20,y-20,40,40);
-        
-        if (which == 5) {
-          if (wdisp[6] == corval[6]) {stroke(0);} else {stroke(255,0,0);}
-          fill(pcolr[wdisp[6]]);
-          ellipse(x,y,20,20);
+    void draw(id) {
+        if (id == 0) {
+          x += (width/2 - x)/50;
         }
-        
-        translate(-decox,-decoy);
-        if ((mouseX - decox).between(x-20,x+20) && (mouseY - decoy).between(y-20,y+20)) {
-          textAlign(LEFT,TOP);
-          textSize(50);    
-            
-          if (wdisp[0] == corval[0]) {fill(0);} else {fill(255,0,0);}
-          text(metal[wdisp[0]],0,0);
-            
-          textSize(20);
-          if (wdisp[1] == corval[1]) {fill(0);} else {fill(255,0,0);}
-          text(" - " + preci[wdisp[1]],0,50);
-            
-          if (wdisp[2] == corval[2]) {fill(0);} else {fill(255,0,0);}
-          text(" - " + solub[wdisp[2]],0,70);
-            
-          textSize(10);
-          if (which != 3) {
-            text("Tested with Sodium Hydroxide",0,90);
-          } else {
-            if (ammon) {
-              text("Tested with Ammonia",0,90);} else {text("Tested with Ammonium Hydroxide",0,90);}
-          }
-          if (which == 5) {
-            textSize(20);
-            if (wdisp[4] == corval[4]) {fill(0);} else {fill(255,0,0);}
-            text(" - " + preci[wdisp[4]],0,120);
-              
-            if (wdisp[5] == corval[5]) {fill(0);} else {fill(255,0,0);}
-            text(" - " + solub[wdisp[5]],0,140);
+        if (id == 1) {
+          x += (0 - x)/50;
+        }
+        if (pass) {
+          x += (width*2 - x)/50;
+        }
+        if (reverse) {
+          x += (-width - x)/50;
+          translate(x,0);
+          rect(300,height/4,-300,height);
+          rect(0,height*3/4 - 100,-40,50);
+          rect(-40,height/4 + 100,-20,height);
+          rect(-60 - box[0],height*3/4 - 100,-200,100);
+          rect(-60 - box[1],height*3/4 - 200,-200,100);
+          rect(-60 - box[2],height*3/4 - 300,-200,100);
+          translate(-x,0);
+        } else {
+          translate(x,0);
+          rect(-300,height/4,300,height);
+          rect(0,height*3/4 - 100,40,50);
+          rect(40,height/4 + 100,20,height);
+          rect(60 + box[0],height*3/4 - 100,200,100);
+          rect(60 + box[1],height*3/4 - 200,200,100);
+          rect(60 + box[2],height*3/4 - 300,200,100);
+          translate(-x,0);
+        }
+    }
 
-            textSize(10);
-            if (ammon) {text("Tested with Ammonia",0,160);} else {text("Tested with Ammonium Hydroxide",0,160);}
-            if (notcert) {text("Not enough documents.",0,170);}
-          } else {
-            textSize(10);
-            fill(255,0,0);
-            if (notcert) {text("Not enough documents.",0,100);}
-          }
+    void viewInfo() {
+      if (x.between(width/4,width*3/4)) {
+      if (!pass && !reverse && (py >= height || (mouseX.between(px - 190, px + 190) && mouseY.between(py - 150, py + 150) && mousePressed))) {
+        if (shake) {
+          shake = false;
+          rot[0] = random(-10,5);
+          rot[1] = rot[0] + random(-10,10);
+          rot[2] = rot[1] + random(-10,10);
         }
-        translate(decox,decoy);
+      } else {
+        py += 45;
+        shake = true;
+      }
+    
+      translate(px,py);
+        
+      fill(pcolr[wdisp[3]]); 
+      stroke(pcolr[wdisp[3]]); 
+      rotate(radians(rot[2]));
+      rect(-190 + rot[1] + rot[2],-150 - rot[1] - rot[2],380,300);
+      rotate(-radians(rot[2]));
+        
+      if (which == 5) {
+        fill(pcolr[wdisp[6]]); 
+        stroke(pcolr[wdisp[6]]); 
+      }
+      rotate(radians(rot[1]));
+      rect(-190 + rot[1],-150 - rot[1],380,300);
+      rotate(-radians(rot[1]));
+        
+      fill(255,250,225);
+      stroke(255,253,253);
+      rotate(radians(rot[0]));
+      rect(-190,-150,380,300);
+        
+      textAlign(CENTER,TOP);
+      
+      fill(0);  
+      textSize(50);            
+      text(metal[wdisp[0]],0, - 150);
+            
+      textSize(20);
+      text(preci[wdisp[1]],0, - 85);
+      text(solub[wdisp[2]],0, - 60);
+            
+      textSize(10);
+      if (which != 3) {
+        text("Tested with Sodium Hydroxide (Sample 1)",0, - 40);
+      } else {
+        if (ammon) {
+          text("Tested with Ammonia (Sample 1)",0, - 40);} else {text("Tested with Ammonium Hydroxide (Sample 1)",0, - 40);}
+      }
+      if (which == 5) {
+        fill(0);  
+        textSize(20);
+        text(preci[wdisp[4]],0, - 25);
+        text(solub[wdisp[5]],0, - 5);
+
+        textSize(10); 
+        if (ammon) {text("Tested with Ammonia (Sample 2)",0,15);} else {text("Tested with Ammonium Hydroxide (Sample 2)",0,15);}
+      }
+        
+      textSize(10);
+      textAlign(RIGHT,BOTTOM);
+      fill(0);
+      text("Photocopied for ISD Ispection",190,150);
+      rotate(-radians(rot[0]));
+      translate(-px,-py);
+    }
     }
 }
