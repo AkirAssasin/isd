@@ -213,7 +213,7 @@ class Bot {
           x += (0 - x)/50;
         }
         if (pass) {
-          x += (width*2 - x)/50;
+          x += 25;
         }
         if (reverse) {
           x -= 25;
