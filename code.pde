@@ -30,6 +30,8 @@ int[] c_ammo = {7, 0, 0, 5, 0, 0, 5};
 
 int fails = 0;
 
+float firetime = 0;
+
 void setup() {
     width = window.innerWidth;
     height = window.innerHeight;
@@ -58,6 +60,8 @@ void draw() {
     background(225);
     fill(225);
     stroke(0);
+    if (fails >= 3) {firetime += 0.1;}
+    translate(random(-firetime,firetime),random(-firetime,firetime));
     for (int i=bots.size()-1; i>=0; i--) {
         Particle b = (Bot) bots.get(i);
         b.draw(i);
