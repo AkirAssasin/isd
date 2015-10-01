@@ -8,7 +8,7 @@ String[] preci = {"No Precipitates", "Has Precipitates"};
 String[] solub = {"Dissolves in Excess", "Does not Dissolve in Excess"};
 color[] pcolr = {color(59,70,45), color(64,29,6), color(123,209,221), color(87,100,87), color(255), color(255,100)};
 
-String[] three = {"Concentrate. You have 3 chances, junior.", "Calm down! You still get two tries.", "Don't make a mistake, boy!"};
+String[] three = {"Concentrate. You have 3 chances, junior.", "Calm down! You still get two tries.", "Don't make a mistake, boy!", "You gon act like an idiot? YOU GON GET FIRED LIKE AN IDIOT!"};
 
 // Metal, Precipitate in NaOH, Dissolve in excess NaOH, Colour of Precipitate in NaOH, Precipitate in (NH3)/(NH4)OH, Dissolve in excess (NH3)/(NH4)OH, Colour of Precipitate in (NH3)/(NH4)OH.
 
