@@ -113,7 +113,7 @@ void draw() {
     b.viewInfo();
     
     fill(0,max((firetime - 30),0)*8.5);
-    rect(-width,-height,width*2,height*2);
+    rect(-firetime,-firetime,width + firetime*2,height + firetime*2);
 }
 
 void mousePressed() {
