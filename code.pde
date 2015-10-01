@@ -216,7 +216,7 @@ class Bot {
           x += (width*2 - x)/50;
         }
         if (reverse) {
-          x -= 5;
+          x -= 25;
           translate(x,0);
           stroke(249,200,48);
           fill(249,200,48);
