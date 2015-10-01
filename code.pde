@@ -112,7 +112,8 @@ void draw() {
     Particle b = (Bot) bots.get(0);
     b.viewInfo();
     
-    fill(0,255 - (firetime - 30)*8.5);
+    fill(0,255 - (max((firetime - 30),0)*8.5);
+    rect(-width,-height,width*2,height*2);
 }
 
 void mousePressed() {
