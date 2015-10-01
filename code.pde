@@ -99,7 +99,7 @@ void draw() {
     textAlign(RIGHT,CENTER);
     textSize(15);
     fill(0);
-    text(three[min(fails,2)],width/18 + 7.5,-width/9 - 55);
+    text(three[min(fails,2)],width/18 - 15,-width/9 - 55);
     translate(-width*7/8,-height*3/4 - height/8);
     
     pwidth = width;
