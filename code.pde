@@ -118,7 +118,7 @@ void draw() {
     rect(-firetime,-firetime,width + firetime*2,height + firetime*2);
     fill(255);
     if (firetime > 60) {
-      textSize(width - firetime*3);
+      textSize(width/10);
       textAlign(CENTER,CENTER);
       text("YOU ARE FIRED",width/2,height/2);
     }
