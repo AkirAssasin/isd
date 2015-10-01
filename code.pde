@@ -96,10 +96,10 @@ void draw() {
     stroke(255);
     triangle(width/18,-width/9 - 15,width/18,-width/9 - 40,width/18 - 15,-width/9 - 40);
     rect(width/18,-width/9 - 40,-three[min(fails,2)].length()*15,-30);
-    textAlign(CENTER,BOTTOM);
+    textAlign(RIGHT,CENTER);
     textSize(15);
     fill(0);
-    text(three[min(fails,2)],width/18,-width/9);
+    text(three[min(fails,2)],width/18,-width/9 - 30);
     translate(-width*7/8,-height*3/4 - height/8);
     
     pwidth = width;
