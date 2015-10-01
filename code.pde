@@ -92,6 +92,9 @@ void draw() {
     stroke(255,0,0);
     ellipse(0,0,width/9,width/9);
     rotate(radians(-10));
+    fill(240);
+    stroke(240);
+    triangle(width/18,-width/9 - 15,width/18,-width/9 - 40,width/18 - 15,-width/9 - 40);
     translate(-width*7/8,-height*3/4 - height/8);
     
     pwidth = width;
