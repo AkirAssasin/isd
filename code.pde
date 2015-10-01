@@ -95,7 +95,7 @@ void draw() {
     fill(255);
     stroke(255);
     triangle(width/18,-width/9 - 15,width/18,-width/9 - 40,width/18 - 15,-width/9 - 40);
-    rect(width/18,-width/9 - 40,-three[min(fails,2)].length()*15,-30);
+    rect(width/18,-width/9 - 40,-three[min(fails,2)].length()*8,-30);
     textAlign(RIGHT,CENTER);
     textSize(15);
     fill(0);
