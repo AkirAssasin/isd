@@ -123,7 +123,7 @@ void draw() {
       text("YOU ARE FIRED",width/2,height/2);
     }
     
-    if (firetime > 80) {location.reload();}
+    if (firetime == 80) {location.reload();}
 }
 
 void mousePressed() {
