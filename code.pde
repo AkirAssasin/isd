@@ -114,6 +114,12 @@ void draw() {
     
     fill(0,max((firetime - 30),0)*8.5);
     rect(-firetime,-firetime,width + firetime*2,height + firetime*2);
+    fill(255);
+    if (firetime > 60) {
+      textSize(width/5);
+      textAlign(CENTER,CENTER);
+      text("YOU ARE FIRED",width/2,height/2);
+    }
 }
 
 void mousePressed() {
