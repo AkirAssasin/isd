@@ -7,3 +7,13 @@ Some people just cannot understand simple instructions and label objects wrongly
 Green button is correct and red is wrong. Just so you know...
 
 # Yes sir!
+W-w-w-what? You believed that crap I gave you?
+
+# Yes sir.
+That was a joke. This is just some game I made for a school assignment.
+
+# Serious? What for?
+We were supposed to make a revision game for identifying cations. I am as much a sir as you are.
+
+# But I am a Sir.
+...
