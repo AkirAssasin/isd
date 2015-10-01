@@ -5,9 +5,10 @@ var myfont = loadFont("fonts/font.ttf");
 ArrayList bots;
 String[] metal = {"Zinc", "Aluminium", "Iron(II)", "Iron(III)", "Copper", "Chromium", "Calcium", "Ammonium"};
 String[] preci = {"No Precipitates", "Has Precipitates"};
-String[] solub = {"Dissolves", "Does not Dissolve"};
-String[] pncolr = {"Dirty Green", "Brown", "Blue", "Grey Green", "White", "None"};
+String[] solub = {"Dissolves in Excess", "Does not Dissolve in Excess"};
 color[] pcolr = {color(59,70,45), color(64,29,6), color(123,209,221), color(87,100,87), color(255), color(255,100)};
+
+String[] three = {"Concentrate. You have 3 chances, junior.", "Calm down! You still get two tries.", "Don't make a mistake, boy!"};
 
 // Metal, Precipitate in NaOH, Dissolve in excess NaOH, Colour of Precipitate in NaOH, Precipitate in (NH3)/(NH4)OH, Dissolve in excess (NH3)/(NH4)OH, Colour of Precipitate in (NH3)/(NH4)OH.
 
@@ -67,12 +68,32 @@ void draw() {
           bots.remove(i);
         }
     }
-    fill(150);
+    fill(200);
+    stroke(200);
     rect(0,height*3/4,width,height/4);
+    textAlign(CENTER,CENTER);
+    textSize(width/18);
     fill(0,255,0);
+    stroke(0,255,0);
     ellipse(width/8,height*3/4 + height/8,width/9,width/9);
+    fill(0,100,0);
+    stroke(0,100,0);
+    text("GO",width/8,height*3/4 + height/8);
+    
+    translate(width*7/8,height*3/4 + height/8);
+    rotate(radians(10));
+    fill(150);
+    stroke(150);
+    rect(width/9*3/4 - 30,-width/9,15,-width/8);
+    rect(-width/9*3/4,-width/9,width/9*6/4,width/9 + width/9);
+    if (random(1) > 0.1) {fill(248,251,153);} else {fill(75,77,46);}
+    ellipse(-width/9*3/4 + 15,-width/9 + 15,15,15);
     fill(255,0,0);
-    ellipse(width*7/8,height*3/4 + height/8,width/9,width/9);
+    stroke(255,0,0);
+    ellipse(0,0,width/9,width/9);
+    rotate(radians(-10));
+    translate(-width*7/8,-height*3/4 - height/8);
+    
     pwidth = width;
     pheight = height;
     
@@ -82,7 +103,9 @@ void draw() {
     textAlign(CENTER,TOP);
     textSize(15);
     fill(0);
-    text("lol you noob you failed " + fails + " times yolo",width/2,0);
+    text(three[min(fails,2)],width/2,0);
+    
+    
 }
 
 void mousePressed() {
@@ -195,21 +218,77 @@ class Bot {
         if (reverse) {
           x += (-width - x)/50;
           translate(x,0);
+          stroke(249,200,48);
+          fill(249,200,48);
           rect(300,height/4,-300,height);
+            
+          stroke(151,249,231);
+          fill(151,249,231);
+          rect(200,height/4 + 50,-190,200);
+            
+          stroke(107);
+          fill(107);
           rect(0,height*3/4 - 100,-40,50);
+            
+          stroke(53,85,17);
+          fill(53,85,17);
+          rect(300,height*3/4 - 30,-320,height);
+          rect(300,height/4 - 10,-50,height);
+          rect(100,height*3/4 - 80,-120,height);
+            
+          stroke(122);
+          fill(122);
           rect(-40,height/4 + 100,-20,height);
+            
+          stroke(116,85,37);
+          fill(116,85,37);
           rect(-60 - box[0],height*3/4 - 100,-200,100);
+            
+          stroke(100,85,37);
+          fill(100,85,37);
           rect(-60 - box[1],height*3/4 - 200,-200,100);
+            
+          stroke(116,90,37);
+          fill(116,90,37);
           rect(-60 - box[2],height*3/4 - 300,-200,100);
+            
           translate(-x,0);
         } else {
           translate(x,0);
+          stroke(249,200,48);
+          fill(249,200,48);
           rect(-300,height/4,300,height);
+            
+          stroke(151,249,231);
+          fill(151,249,231);
+          rect(-200,height/4 + 50,190,200);
+            
+          stroke(107);
+          fill(107);
           rect(0,height*3/4 - 100,40,50);
+            
+          stroke(53,85,17);
+          fill(53,85,17);
+          rect(-300,height*3/4 - 30,320,height);
+          rect(-300,height/4 - 10,50,height);
+          rect(-100,height*3/4 - 80,120,height);
+            
+          stroke(122);
+          fill(122);
           rect(40,height/4 + 100,20,height);
+            
+          stroke(116,85,37);
+          fill(116,85,37);
           rect(60 + box[0],height*3/4 - 100,200,100);
+            
+          stroke(100,85,37);
+          fill(100,85,37);
           rect(60 + box[1],height*3/4 - 200,200,100);
+            
+          stroke(116,90,37);
+          fill(116,90,37);
           rect(60 + box[2],height*3/4 - 300,200,100);
+            
           translate(-x,0);
         }
     }
