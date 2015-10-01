@@ -61,7 +61,9 @@ void draw() {
     fill(225);
     stroke(0);
     if (fails >= 3) {firetime += 0.1;}
-    translate(random(-firetime,firetime),random(-firetime,firetime));
+    if (firetime < 60) {
+      translate(random(-firetime,firetime),random(-firetime,firetime));
+    }
     for (int i=bots.size()-1; i>=0; i--) {
         Particle b = (Bot) bots.get(i);
         b.draw(i);
