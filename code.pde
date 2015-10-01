@@ -92,9 +92,14 @@ void draw() {
     stroke(255,0,0);
     ellipse(0,0,width/9,width/9);
     rotate(radians(-10));
-    fill(240);
-    stroke(240);
+    fill(255);
+    stroke(255);
     triangle(width/18,-width/9 - 15,width/18,-width/9 - 40,width/18 - 15,-width/9 - 40);
+    rect(width/18,-width/9 - 15,-15,-three[min(fails,2)].length()*15);
+    textAlign(RIGHT,BOTTOM);
+    textSize(15);
+    fill(0);
+    text(three[min(fails,2)],width/18,-width/9 - 15);
     translate(-width*7/8,-height*3/4 - height/8);
     
     pwidth = width;
@@ -102,13 +107,6 @@ void draw() {
     
     Particle b = (Bot) bots.get(0);
     b.viewInfo();
-    
-    textAlign(CENTER,TOP);
-    textSize(15);
-    fill(0);
-    text(three[min(fails,2)],width/2,0);
-    
-    
 }
 
 void mousePressed() {
