@@ -279,7 +279,7 @@ class Bot {
         corval = choiceval;
       }
       fake = true;
-      if (which != 5) {fakeval = chance.pick([0,1,2,3]);} else {fakeval = chance.pick([0,1,2,3,4,5,6]);}
+      if (which != 5) {fakeval = chance.pick([0,1,2]);} else {fakeval = chance.pick([0,1,2,4,5]);}
       wdisp[fakeval] += chance.pick([-2,-1,1,2]);
       if (fakeval == 0) {
         wdisp[0] = constrain(wdisp[0],0,7);
