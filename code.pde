@@ -7,6 +7,7 @@ String[] metal = {"Zinc", "Aluminium", "Iron(II)", "Iron(III)", "Copper", "Chrom
 String[] preci = {"No Precipitates", "Has Precipitates"};
 String[] solub = {"Dissolves in Excess", "Does not Dissolve in Excess"};
 color[] pcolr = {color(59,70,45), color(64,29,6), color(123,209,221), color(87,100,87), color(255), color(255,100)};
+// Dirty Green, Shit color, Coppah, Grey shit, White, Kosong
 
 String[] three = {"Your first time here? Great. Don't get fired so fast!", "I think I should get a backup junior.", "Oh boy. You better wait till I get there.", "God knows why I recruited you! How did you pass your exams?"};
 
@@ -234,6 +235,7 @@ class Bot {
     int[] choiceval;
     int[] corval;
     int[] wdisp;
+    int fakeval;
     boolean fake;
     boolean shake;
     float[] rot = new float[3];
@@ -276,30 +278,31 @@ class Bot {
         wdisp = choiceval;
         corval = choiceval;
       }
-      if (random(1) > 0) {
-        fake = true;
-        if (which != 5) {int fakeval = chance.pick([0,1,2,3]);} else {int fakeval = chance.pick([0,1,2,3,4,5,6]);}
-        wdisp[fakeval] += round(random(-2,2));
-        if (fakeval == 0) {
-          wdisp[fakeval] = constrain(wdisp[fakeval],0,7);
-        } else if (fakeval == 1) {
-          wdisp[fakeval] = constrain(wdisp[fakeval],0,1);
-        } else if (fakeval == 2) {
-          wdisp[fakeval] = constrain(wdisp[fakeval],0,1);
-        } else if (fakeval == 3) {
-          wdisp[fakeval] = constrain(wdisp[fakeval],0,5);
-        }
-        if (which == 5) {
-          if (fakeval == 4) {
-            wdisp[fakeval] = constrain(wdisp[fakeval],0,1);
-          } else if (fakeval == 5) {
-            wdisp[fakeval] = constrain(wdisp[fakeval],0,1);
-          } else if (fakeval == 6) {
-            wdisp[fakeval] = constrain(wdisp[fakeval],0,5);
-          }
-        }
-        if (wdisp == corval) {fake = false;}
+      fake = true;
+      if (which != 5) {fakeval = chance.pick([0,1,2,3]);} else {fakeval = chance.pick([0,1,2,3,4,5,6]);}
+      wdisp[fakeval] += chance.pick([-2,-1,1,2]);
+      if (fakeval == 0) {
+        wdisp[0] = constrain(wdisp[0],0,7);
       }
+      if (fakeval == 1) {
+        wdisp[1] = constrain(wdisp[1],0,1);
+      } 
+      if (fakeval == 2) {
+        wdisp[2] = constrain(wdisp[2],0,1);
+      } 
+      if (fakeval == 3) {
+        wdisp[3] = constrain(wdisp[3],0,5);
+      }
+      if (fakeval == 4) {
+        wdisp[4] = constrain(wdisp[4],0,1);
+      }
+      if (fakeval == 5) {
+        wdisp[5] = constrain(wdisp[5],0,1);
+      }
+      if (fakeval == 6) {
+        wdisp[6] = constrain(wdisp[6],0,5);
+      }
+      if (wdisp == corval) {fake = false;}
     };
 
     void draw(id) {
