@@ -8,7 +8,7 @@ String[] preci = {"No Precipitates", "Has Precipitates"};
 String[] solub = {"Dissolves in Excess", "Does not Dissolve in Excess"};
 color[] pcolr = {color(59,70,45), color(64,29,6), color(123,209,221), color(87,100,87), color(255), color(255,100)};
 
-String[] three = {"Concentrate. You have 3 chances, junior.", "Calm down! You still get two tries.", "Don't make a mistake, boy!", "You gon act like an idiot? YOU GON GET FIRED LIKE AN IDIOT!"};
+String[] three = {"Your first time here? Great. Don't get fired so fast!", "I think I should get a backup junior.", "Oh boy. You better wait till I get there.", "God knows why I recruited you! How did you pass your exams?"};
 
 // Metal, Precipitate in NaOH, Dissolve in excess NaOH, Colour of Precipitate in NaOH, Precipitate in (NH3)/(NH4)OH, Dissolve in excess (NH3)/(NH4)OH, Colour of Precipitate in (NH3)/(NH4)OH.
 
@@ -28,6 +28,15 @@ int[] c_calc = {6, 1, 1, 4, 0, 0, 5};
 
 int[] c_ammo = {7, 0, 0, 5, 0, 0, 5};
 
+int[] correction = new int[7];
+
+Boolean showcor = false;
+
+float cortime = 255;
+
+int score;
+int highscore;
+
 int fails = 0;
 
 float firetime = 0;
@@ -42,6 +51,8 @@ void setup() {
     //textFont(myfont);
     bots.add(new Bot());
     bots.add(new Bot());
+    score = 0;
+    highscore = $.jStorage.get("hs", 0);
 }
 
  
@@ -54,6 +65,7 @@ Number.prototype.between = function (min, max) {
 
 
 void draw() {
+    if (score > highscore) {highscore = score;}
     width = window.innerWidth;
     height = window.innerHeight;
     size(width, height);
@@ -76,7 +88,7 @@ void draw() {
     }
     fill(200);
     stroke(200);
-    rect(0,height*3/4,width,height/4);
+    rect(-width,height*3/4,width*3,height);
     textAlign(CENTER,CENTER);
     textSize(width/18);
     fill(0,255,0);
@@ -97,6 +109,10 @@ void draw() {
     fill(255,0,0);
     stroke(255,0,0);
     ellipse(0,0,width/9,width/9);
+    textAlign(CENTER,CENTER);
+    textSize(width/18);
+    fill(100,0,0);
+    text("NO",0,0);
     rotate(radians(-10));
     fill(255);
     stroke(255);
@@ -114,6 +130,56 @@ void draw() {
     Particle b = (Bot) bots.get(0);
     b.viewInfo();
     
+    if (showcor) {
+      translate(width-250,200);
+        
+      fill(pcolr[correction[3]]); 
+      stroke(pcolr[correction[3]]); 
+      rotate(radians(5));
+      rect(-190,-150,380,300);
+      rotate(-radians(5));
+        
+      fill(pcolr[correction[6]]); 
+      stroke(pcolr[correction[6]]); 
+      
+      rotate(radians(15));
+      rect(-190,-150,380,300);
+      rotate(-radians(15));
+        
+      fill(255,250,225);
+      stroke(255,253,253);
+      rect(-190,-150,380,300);
+        
+      textAlign(CENTER,TOP);
+      
+      fill(0);  
+      textSize(40);            
+      text("Actual " + metal[correction[0]],0, - 150);
+            
+      textSize(20);
+      text(preci[correction[1]],0, - 85);
+      text(solub[correction[2]],0, - 60);
+            
+      textSize(10);
+      
+      text("Tested with Sodium Hydroxide (Sample 1)",0, - 40);
+        
+        textSize(20);
+        text(preci[correction[4]],0, - 25);
+        text(solub[correction[5]],0, - 5);
+
+        textSize(10); 
+        text("Tested with Ammonia (Sample 2)",0,15);
+        
+      textSize(10);
+      textAlign(RIGHT,BOTTOM);
+      fill(0);
+      text("Printed for ISD Junior Correction",190,150);
+    
+      translate(-width+250,-200);
+    }
+    
+    stroke(0,0);
     fill(0,max((firetime - 30),0)*8.5);
     rect(-firetime,-firetime,width + firetime*2,height + firetime*2);
     fill(255);
@@ -123,21 +189,32 @@ void draw() {
       text("YOU ARE FIRED",width/2,height/2);
     }
     
-    if (firetime == 80) {location.reload();}
+    if (firetime > 80 && firetime < 85) {
+        $.jStorage.set("hs",highscore); 
+        location.reload();
+    }
+    textAlign(LEFT,TOP);
+    textSize(width/100);
+    fill(0);
+    text("A junior got " + highscore + " correct answers before he got fired. - Q. Ruby",0,0);
 }
 
 void mousePressed() {
     if (dist(mouseX,mouseY,width/8,height*3/4 + height/8) <= width/9) {
       Particle b = (Bot) bots.get(0);
       b.pass = true;
-      if (b.fake || b.notcert) {fails += 1;}
+      showcor = false;
+      if (b.fake) {fails += 1; showcor = true;} else {score += 1;}
       bots.add(new Bot());
+      correction = b.choiceval;
     }
     if (dist(mouseX,mouseY,width*7/8,height*3/4 + height/8) <= width/9) {
       Particle b = (Bot) bots.get(0);
       b.reverse = true;
-      if (b.fake == false && b.notcert == false) {fails += 1;}
+      showcor = false;
+      if (b.fake == false && b.notcert == false) {fails += 1; showcor = true;} else {score += 1;}
       bots.add(new Bot());
+      correction = b.choiceval;
     }
 }
 
@@ -165,6 +242,8 @@ class Bot {
     float[] box = new float[3];
     boolean pass = false;
     boolean reverse = false;
+    float patience;
+    float idle;
 
     Bot() {
       x = -300;
@@ -176,8 +255,10 @@ class Bot {
       box[1] = random(20);
       box[2] = random(20);
       notcert = false;
+      patience = random(600,2400);
+      idle = 0;
       which = chance.pick([0,3,5]);
-      if ((choiceval == c_calc && which == 3) || (choiceval == c_zinc && which == 0) || (choiceval == c_alum && which == 0)) {notcert = true;}
+      if (choiceval == c_calc || choiceval == c_zinc || choiceval == c_alum) {which = 5;}
       ammon = chance.pick([true,false]);
       if (which != 5) {
         wdisp = {
@@ -212,18 +293,29 @@ class Bot {
         }
         if (which == 5) {
           if (fakeval == 4) {
-            wdisp[fakeval] = constrain(wdisp[fakeval],0,7);
+            wdisp[fakeval] = constrain(wdisp[fakeval],0,1);
           } else if (fakeval == 5) {
             wdisp[fakeval] = constrain(wdisp[fakeval],0,1);
           } else if (fakeval == 6) {
-            wdisp[fakeval] = constrain(wdisp[fakeval],0,1);
+            wdisp[fakeval] = constrain(wdisp[fakeval],0,5);
           }
         }
-        if (wdisp[fakeval] == corval[fakeval]) {fake = false;}
+        if (wdisp == corval) {fake = false;}
       }
     };
 
     void draw(id) {
+        if (idle < patience && !pass && !reverse && id == 0) {
+          idle += 1;
+        } else if (id == 0) {
+          if (!reverse && !pass) {
+            bots.add(new Bot());
+            reverse = true;
+            fails += 1;
+            correction = corval;
+          }
+        }
+        
         if (id == 0) {
           x += (width/2 - x)/50;
         }
@@ -270,6 +362,19 @@ class Bot {
           fill(116,90,37);
           rect(-60 - box[2],height*3/4 - 300,-200,100);
             
+          if (idle >= patience*3/4 && !pass) {
+            translate(width/8,0);
+            fill(255);
+            stroke(255);
+            triangle(-20,height*3/4 - 325,-35,height*3/4 - 325,-35,height*3/4 - 300);
+            rect(-35,height*3/4 - 325,100,-30);
+            fill(0);
+            textSize(15);
+            textAlign(LEFT,CENTER);
+            text("#@$#&@*$(!",-30,height*3/4 - 340);
+            translate(-width/8,0);
+          }
+            
           translate(-x,0);
         } else {
           translate(x,0);
@@ -306,6 +411,17 @@ class Bot {
           stroke(116,90,37);
           fill(116,90,37);
           rect(60 + box[2],height*3/4 - 300,200,100);
+            
+          if (idle > patience*3/4 && !pass) {
+            fill(255);
+            stroke(255);
+            triangle(-20,height*3/4 - 325,-35,height*3/4 - 325,-35,height*3/4 - 300);
+            rect(-35,height*3/4 - 325,100,-30);
+            fill(0);
+            textSize(15);
+            textAlign(LEFT,CENTER);
+            text("#@$#&@*$(!",-30,height*3/4 - 340);
+          }
             
           translate(-x,0);
         }
