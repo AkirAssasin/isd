@@ -254,10 +254,9 @@ class Bot {
       box[0] = random(20);
       box[1] = random(20);
       box[2] = random(20);
-      notcert = false;
       patience = random(600,2400);
       idle = 0;
-      which = chance.pick([0,3,5]);
+      which = chance.pick([0,3]);
       if (choiceval == c_calc || choiceval == c_zinc || choiceval == c_alum) {which = 5;}
       ammon = chance.pick([true,false]);
       if (which != 5) {
@@ -267,18 +266,11 @@ class Bot {
             choiceval[5 - which],
             choiceval[6 - which]
         };
-          
-        corval = {
-            choiceval[0], 
-            choiceval[4 - which],
-            choiceval[5 - which],
-            choiceval[6 - which]
-        };
+        wdisp = corval;
       } else {
         wdisp = choiceval;
         corval = choiceval;
       }
-      fake = true;
       if (which != 5) {fakeval = chance.pick([0,1,2,3]);} else {fakeval = chance.pick([0,1,2,3,4,5,6]);}
       wdisp[fakeval] += chance.pick([-2,-1,1,2]);
       if (fakeval == 0) {
@@ -302,7 +294,7 @@ class Bot {
       if (fakeval == 6) {
         wdisp[6] = constrain(wdisp[6],0,5);
       }
-      if (wdisp == corval) {fake = false;}
+      if (wdisp == corval) {fake = false;} else {fake = true;}
     };
 
     void draw(id) {
