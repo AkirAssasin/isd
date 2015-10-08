@@ -200,19 +200,17 @@ void draw() {
 }
 
 void mousePressed() {
-    if (dist(mouseX,mouseY,width/8,height*3/4 + height/8) <= width/9) {
+    if (dist(mouseX,mouseY,width/8,height*3/4 + height/8) <= width/2/9) {
       Particle b = (Bot) bots.get(0);
       b.pass = true;
-      showcor = false;
-      if (b.fake) {fails += 1; showcor = true;} else {score += 1;}
+      if (b.fake) {fails += 1; showcor = true;} else {score += 1; showcor = false;}
       bots.add(new Bot());
       correction = b.choiceval;
     }
-    if (dist(mouseX,mouseY,width*7/8,height*3/4 + height/8) <= width/9) {
+    if (dist(mouseX,mouseY,width*7/8,height*3/4 + height/8) <= width/2/9) {
       Particle b = (Bot) bots.get(0);
       b.reverse = true;
-      showcor = false;
-      if (b.fake == false && b.notcert == false) {fails += 1; showcor = true;} else {score += 1;}
+      if (b.fake == false && b.notcert == false) {fails += 1; showcor = false;} else {score += 1; showcor = true;}
       bots.add(new Bot());
       correction = b.choiceval;
     }
