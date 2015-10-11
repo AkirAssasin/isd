@@ -1,19 +1,13 @@
-# CSI - Cations and Substances Identificator
-Hey there, boy! The strong has gone to war, the dumb to transfer chemicals and the smart to govern the world. You are neither... So you have been recruited and trained as a CSI!
+# CSI - Cations and Substances Identificator.
+Welcome to a fictional border where chemical companies transfer their chemicals into your country. Check their passports and make sure it's correct! If it's correct, let them pass, but if they are wrong, alert your colleagues!
 
-# What am I supposed to do, sir?
-Some people just cannot understand simple instructions and label objects wrongly. Your job is to check the labels and make sure they are correct. Don't give too much work to the smart (they have nuclear-related problems of their own) or you will get fired!
+# Pick your side!
+Protect the market of cations and prevent the fakes and pirated cations from being transferred! - Q. Ruby
 
-Green button is correct and red is wrong. Just so you know...
+or...
 
-# Yes sir!
-W-w-w-what? You believed that crap I gave you?
+Let as many wrong passport holders in and be part of the Insurgency! - I. Hgby
 
-# Yes sir.
-That was a joke. This is just some game I made for a school assignment.
+Just don't try to do both and fail terribly.
 
-# Serious? What for?
-We were supposed to make a revision game for identifying cations. I am as much a sir as you are.
-
-# But I am a Sir.
-...
+# A Year 10 IGCSE revision game meant for a school project. 
