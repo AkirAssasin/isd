@@ -56,14 +56,9 @@ void setup() {
     highscore = $.jStorage.get("hs", 0);
 }
 
- 
-
 Number.prototype.between = function (min, max) {
     return this > min && this < max;
 };
-
-
-
 
 void draw() {
     if (score > highscore) {highscore = score;}
@@ -278,31 +273,23 @@ class Bot {
         wdisp = choiceval;
         corval = choiceval;
       }
-      fake = true;
-      if (which != 5) {fakeval = chance.pick([0,1,2]);} else {fakeval = chance.pick([0,1,2,4,5]);}
-      wdisp[fakeval] += chance.pick([-2,-1,1,2]);
-      if (fakeval == 0) {
-        wdisp[0] = constrain(wdisp[0],0,7);
-      }
-      if (fakeval == 1) {
-        wdisp[1] = constrain(wdisp[1],0,1);
-      } 
-      if (fakeval == 2) {
-        wdisp[2] = constrain(wdisp[2],0,1);
-      } 
-      if (fakeval == 3) {
-        wdisp[3] = constrain(wdisp[3],0,5);
-      }
-      if (fakeval == 4) {
-        wdisp[4] = constrain(wdisp[4],0,1);
-      }
-      if (fakeval == 5) {
-        wdisp[5] = constrain(wdisp[5],0,1);
-      }
-      if (fakeval == 6) {
-        wdisp[6] = constrain(wdisp[6],0,5);
-      }
-      if (wdisp == corval) {fake = false;}
+      if (which != 5) {fakeval = chance.pick([1,2,3]);} else {fakeval = chance.pick([1,2,4,5,6]);}
+        
+      if (random(1) > 0.5) {
+        fake = true;
+        // Dissolvations
+        if (fakeval == 1 || fakeval == 2 || fakeval == 4 || fakeval == 5) {
+          if (wdisp[fakeval] == 0) {wdisp[fakeval] = 1;} else {wdisp[fakeval] = 0;}
+        }
+        // Colorations    
+        if (fakeval == 3 || fakeval == 6) {
+          if (wdisp[fakeval] >= 0 && wdisp[fakeval] <= 3) {
+            wdisp[fakeval] += chance.pick([-1,1]);
+            if (wdisp[fakeval] < 0) {wdisp[fakeval] = 3;}
+            if (wdisp[fakeval] > 3) {wdisp[fakeval] = 0;}
+          }
+        }
+      } else {fake = false;}
     };
 
     void draw(id) {
