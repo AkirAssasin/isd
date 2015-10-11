@@ -9,7 +9,9 @@ String[] solub = {"Dissolves in Excess", "Does not Dissolve in Excess"};
 color[] pcolr = {color(59,70,45), color(64,29,6), color(123,209,221), color(87,100,87), color(255), color(255,100)};
 // Dirty Green, Shit color, Coppah, Grey shit, White, Kosong
 
-String[] three = {"Your first time here? Great. Don't get fired so fast!", "I think I should get a backup junior.", "Oh boy. You better wait till I get there.", "God knows why I recruited you! How did you pass your exams?"};
+String[] three = {"Your first time here? Great. Look carefully!", "It's just a small mistake... I hope...", "I'm on the verge of terminating your job.", "You leave me no choice. Please stand still until you get fired."};
+
+String[] compl = {"useless", "very bad", "bad", "average", "good", "skillful", "marvelous", "excellent", "professional", "masterful"}; 
 
 // Metal, Precipitate in NaOH, Dissolve in excess NaOH, Colour of Precipitate in NaOH, Precipitate in (NH3)/(NH4)OH, Dissolve in excess (NH3)/(NH4)OH, Colour of Precipitate in (NH3)/(NH4)OH.
 
@@ -36,6 +38,7 @@ Boolean showcor = false;
 float cortime = 255;
 
 int score;
+Boolean scorem = false;
 int highscore;
 
 int fails = 0;
@@ -61,7 +64,6 @@ Number.prototype.between = function (min, max) {
 };
 
 void draw() {
-    if (score > highscore) {highscore = score;}
     width = window.innerWidth;
     height = window.innerHeight;
     size(width, height);
@@ -119,6 +121,19 @@ void draw() {
     fill(0);
     text(three[min(fails,3)],width/18 - 15,-width/9 - 55);
     translate(-width*7/8,-height*3/4 - height/8);
+    
+    fill(150);
+    stroke(150);
+    rect(width/2 - width*1.5/20,0,width*3/20,width/20);
+    
+    if (fails < 1) {fill(0,255,0); stroke(0,255,0);} else {fill(255,0,0); stroke(255,0,0);}
+    ellipse(width/2 - width/20,width/40,width/30,width/30);
+    
+    if (fails < 2) {fill(0,255,0); stroke(0,255,0);} else {fill(255,0,0); stroke(255,0,0);}
+    ellipse(width/2,width/40,width/30,width/30);
+    
+    if (fails < 3) {fill(0,255,0); stroke(0,255,0);} else {fill(255,0,0); stroke(255,0,0);}
+    ellipse(width/2 + width/20,width/40,width/30,width/30);
     
     pwidth = width;
     pheight = height;
@@ -180,35 +195,62 @@ void draw() {
     rect(-firetime,-firetime,width + firetime*2,height + firetime*2);
     fill(255);
     if (firetime > 60) {
+      if (!scorem) {
+        score -= fails; 
+        scorem = true;
+        $.jStorage.set("hs",score); 
+      }
       textSize(width/10);
       textAlign(CENTER,CENTER);
       text("YOU ARE FIRED",width/2,height/2);
+      textSize(width/30);
+      textAlign(CENTER,BOTTOM);
+      text("You got " + (score + fails) + " correct and " + fails + " wrong.",width/2,height*3/4);
+      textAlign(CENTER,TOP);
+      if (score < 0) {
+        text("You are a " + compl[min(round(abs((score)/2)),9)] + " insurgent.",width/2,height*3/4);
+      } else {
+        text("You are a " + compl[min(round(abs((score)/2)),9)] + " junior.",width/2,height*3/4);
+      }
+      if (firetime > 80) {
+        textSize(width/50);
+        textAlign(CENTER,BOTTOM);
+        text("Click to refresh",width/2,height);
+      }
     }
     
-    if (firetime > 80 && firetime < 85) {
-        $.jStorage.set("hs",highscore); 
-        location.reload();
-    }
     textAlign(LEFT,TOP);
     textSize(width/100);
     fill(0);
-    text("A junior got " + highscore + " correct answers before he got fired. - Q. Ruby",0,0);
+    if (highscore < 0) {
+      text("The previous turned out to be a " + compl[min(round(abs((highscore)/2)),9)] + " insurgent.",0,0);
+    } else {
+      text("The previous junior was " + compl[min(round(abs((highscore)/2)),9)] + ".",0,0);
+    }
 }
 
 void mousePressed() {
-    if (dist(mouseX,mouseY,width/8,height*3/4 + height/8) <= width/2/9) {
-      Particle b = (Bot) bots.get(0);
-      b.pass = true;
-      if (b.fake) {fails += 1; showcor = true;} else {score += 1; showcor = false;}
-      bots.add(new Bot());
-      correction = b.choiceval;
-    }
-    if (dist(mouseX,mouseY,width*7/8,height*3/4 + height/8) <= width/2/9) {
-      Particle b = (Bot) bots.get(0);
-      b.reverse = true;
-      if (b.fake == false && b.notcert == false) {fails += 1; showcor = false;} else {score += 1; showcor = true;}
-      bots.add(new Bot());
-      correction = b.choiceval;
+    if (firetime < 60) {
+      if (dist(mouseX,mouseY,width/8,height*3/4 + height/8) <= width/2/9) {
+        Particle b = (Bot) bots.get(0);
+        if (!b.pass && !b.reverse) {
+          b.pass = true;
+          if (b.fake) {fails += 1; showcor = true;} else {score += 1; showcor = false;}
+          bots.add(new Bot());
+          correction = b.choiceval;
+        }
+      }
+      if (dist(mouseX,mouseY,width*7/8,height*3/4 + height/8) <= width/2/9) {
+        Particle b = (Bot) bots.get(0);
+        if (!b.pass && !b.reverse) {
+          b.reverse = true;
+          if (b.fake == false && b.notcert == false) {fails += 1; showcor = false;} else {score += 1; showcor = true;}
+          bots.add(new Bot());
+          correction = b.choiceval;
+        }
+      }
+    } else if (firetime > 80) {
+      location.reload();
     }
 }
 
