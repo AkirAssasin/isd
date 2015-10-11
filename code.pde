@@ -6,7 +6,7 @@ ArrayList bots;
 String[] metal = {"Zinc", "Aluminium", "Iron(II)", "Iron(III)", "Copper", "Chromium", "Calcium", "Ammonium"};
 String[] preci = {"No Precipitates", "Has Precipitates"};
 String[] solub = {"Dissolves in Excess", "Does not Dissolve in Excess"};
-color[] pcolr = {color(59,70,45), color(64,29,6), color(123,209,221), color(87,100,87), color(255), color(255,100)};
+color[] pcolr = {color(59,70,45), color(64,29,6), color(123,209,221), color(87,100,87), color(255), color(255,50)};
 // Dirty Green, Shit color, Coppah, Grey shit, White, Kosong
 
 String[] three = {"Your first time here? Great. Look carefully!", "It's just a small mistake... I hope...", "I'm on the verge of terminating your job.", "You leave me no choice. Please stand still until you get fired."};
@@ -36,7 +36,7 @@ int[] correction = new int[7];
 Boolean showcor = false;
 
 float cortime = 255;
-
+float draghint = 0;
 int score;
 Boolean scorem = false;
 int highscore;
@@ -259,6 +259,7 @@ void mouseDragged() {
     if (mouseX.between(b.px - 190, b.px + 190) && mouseY.between(b.py - 150, b.py + 150)) {
       b.px += mouseX - pmouseX;
       b.py += mouseY - pmouseY;
+      draghint = 300;
     }
 }
 
@@ -281,7 +282,6 @@ class Bot {
     boolean reverse = false;
     float patience;
     float idle;
-
     Bot() {
       x = -300;
       choiceval = chance.pick([c_zinc, c_alum, c_iron_a, c_iron_b, c_copp, c_chro, c_calc, c_ammo]);
@@ -317,7 +317,7 @@ class Bot {
       }
       if (which != 5) {fakeval = chance.pick([1,2,3]);} else {fakeval = chance.pick([1,2,4,5,6]);}
         
-      if (random(1) > 0.5) {
+      if (chance.pick([0,1]) == 1) {
         fake = true;
         // Dissolvations
         if (fakeval == 1 || fakeval == 2 || fakeval == 4 || fakeval == 5) {
@@ -458,6 +458,9 @@ class Bot {
     }
 
     void viewInfo() {
+      if (draghint > 0) {
+        draghint -= 1;
+      }
       if (x.between(width/4,width*3/4)) {
       if (!pass && !reverse && (py >= height || (mouseX.between(px - 190, px + 190) && mouseY.between(py - 150, py + 150) && mousePressed))) {
         if (shake) {
@@ -524,6 +527,15 @@ class Bot {
       fill(0);
       text("Photocopied for ISD Ispection",190,150);
       rotate(-radians(rot[0]));
+      if (draghint <= 0) {
+        fill(0,0,150);
+        stroke(0,0,150);
+        rect(110,-160,100,30);
+        textAlign(CENTER,CENTER);
+        textSize(20);
+        fill(255);
+        text("Drag this",160,-145);
+      }
       translate(-px,-py);
     }
     }
