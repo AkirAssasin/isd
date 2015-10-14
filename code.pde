@@ -9,7 +9,7 @@ String[] solub = {"Dissolves in Excess", "Does not Dissolve in Excess"};
 color[] pcolr = {color(59,70,45), color(64,29,6), color(123,209,221), color(87,100,87), color(255), color(255,50)};
 // Dirty Green, Shit color, Coppah, Grey shit, White, Kosong
 
-String[] three = {"Your first time here? Great. Look carefully!", "It's just a small mistake... I hope...", "I'm on the verge of terminating your job.", "You leave me no choice. Please stand still until you get fired."};
+String[] three = {"Your first time here? Great. Look carefully!", "It's just a small mistake... I hope...", "I'm on the verge of terminating your job.", "You leave us no choice but to terminate you."};
 
 String[] compl = {"useless", "very bad", "bad", "average", "good", "skillful", "marvelous", "excellent", "professional", "masterful"}; 
 
@@ -227,6 +227,26 @@ void draw() {
     } else {
       text("The previous junior was " + compl[min(round(abs((highscore)/2)),9)] + ".",0,0);
     }
+    if (!mousePressed && draghint > 0) {
+      if (!b.pass && !b.reverse) {
+        fill(0,50,0);
+        rect(width/8 + 50,height*3/4 + 25,180,25);
+        fill(50,0,0);
+        rect(width - (width/8 + 50),height*3/4 + 25,-190,25);
+        textAlign(LEFT,TOP);
+        textSize(20);
+        fill(255);
+        if (b.idle >= b.patience*3/4) {
+           text("Quick! is correct?",width/8 + 55,height*3/4 + 25);
+           textAlign(RIGHT,TOP);
+           text("Quick! is incorrect?",width - (width/8 + 55),height*3/4 + 25);
+        } else {
+          text("The info is correct.",width/8 + 55,height*3/4 + 25);
+          textAlign(RIGHT,TOP);
+          text("The info is incorrect.",width - (width/8 + 55),height*3/4 + 25);
+        }
+      }
+    }
 }
 
 void mousePressed() {
@@ -362,8 +382,24 @@ class Bot {
           fill(249,200,48);
           rect(300,height/4,-300,height);
             
-          stroke(151,249,231);
-          fill(151,249,231);
+          stroke(225);
+          fill(255);
+          rect(200,height/4 + 50,-190,200);
+            
+          //rect(-200,height/4 + 50,190,200);
+            
+          fill(0);
+          stroke(0);
+          ellipse(120,height/4 + 100,70,70);
+          rect(80,height/4 + 140,80,100,10);
+          rect(80,height/4 + 200,80,50);
+          strokeWeight(30);
+          line(150,height/4 + 160, 165,height/4 + 230);
+          line(165,height/4 + 230,60,height/4 + 235);
+          strokeWeight(1);
+            
+          stroke(151,249,231,50);
+          fill(151,249,231,50);
           rect(200,height/4 + 50,-190,200);
             
           stroke(107);
@@ -412,8 +448,23 @@ class Bot {
           fill(249,200,48);
           rect(-300,height/4,300,height);
             
-          stroke(151,249,231);
-          fill(151,249,231);
+          stroke(225);
+          fill(225);
+          rect(-200,height/4 + 50,190,200);
+            
+          fill(0);
+          stroke(0);
+          ellipse(-120,height/4 + 100,70,70);
+          rect(-160,height/4 + 140,80,100,10);
+          rect(-160,height/4 + 200,80,50);
+          strokeWeight(30);
+          line(-150,height/4 + 160, -165,height/4 + 230);
+          line(-165,height/4 + 230,-60,height/4 + 235);
+          //line(-120,height/4 + 200,-70,height/4 + 200);
+          strokeWeight(1);
+            
+          stroke(151,249,231,50);
+          fill(151,249,231,50);
           rect(-200,height/4 + 50,190,200);
             
           stroke(107);
@@ -530,11 +581,15 @@ class Bot {
       if (draghint <= 0) {
         fill(0,0,150);
         stroke(0,0,150);
-        rect(110,-160,100,30);
-        textAlign(CENTER,CENTER);
+        rect(110,-160,180,30);
+        textAlign(LEFT,CENTER);
         textSize(20);
         fill(255);
-        text("Drag this",160,-145);
+        if (idle >= patience*3/4) {
+          text("Faster! Just do it!",120,-145);
+        } else {
+          text("Drag up and read.",120,-145);
+        }
       }
       translate(-px,-py);
     }
